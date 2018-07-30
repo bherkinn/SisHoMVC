@@ -1,0 +1,164 @@
+/*------PRINCIPALES-----*/
+
+.menu{
+	transition-property: margin-left;
+	transition-duration: 0.5s;
+	/*margin-top: -20px;*/
+	margin-left: 0px;
+	width: 250px;
+	height: 800px;
+	float: left;
+	position: fixed;
+}
+.contenedor{
+	transition-property: margin-left,width;
+	transition-duration: 0.5s;
+	margin-left: 250px;
+	width: 100%-250px;
+	height: 100%;	
+}
+
+.menu-ocultar{
+	transition-property: margin-left;
+	transition-duration: 0.5s;
+	/*margin-top: -20px;*/
+	margin-left: -200px;
+	width: 250px;
+	height: 800px;
+	float: left;
+}
+.contenedor-tapar{
+	transition-property: margin-left,width;
+	transition-duration: 0.5s;
+	margin-left: 50px;
+	width: 100%-50px;
+	height: 100%;	
+}
+
+/*------SECUNDARIOS-----*/
+
+.menu-contenedor{
+	width: 200px;
+	height: 800px;
+	background: #1C5EFF;
+	float: left;
+}
+
+.btn-menu-contenedor{
+	margin-left: 200px;
+	width: 50px;
+	height: 800px;
+	/*background: #0DFFDA;*/
+}
+
+/*------TERCIARIO------*/
+
+.cabecera{
+	margin:10px;
+	width: 180px;
+	height: 75px;
+	position: relative;
+	color: #E7E7E9;
+}
+
+.img-logo{
+	width: 50px;
+	height: 65px;
+	float: left;
+}
+.nom-sistema{
+	float: left;
+	width: 120px;
+	height: 65px;
+	font-size: 23px;
+	text-align: center;
+}
+
+/*------MENU-NAV------*/
+.nav{
+	width: 200px;
+	height: 500px;
+	/*background: #862D2D;*/
+}
+
+.nav>ul{
+	margin-left: -40px;
+}
+
+.nav>ul>li{
+	position: relative;
+	list-style: none;
+}
+
+.nav>ul>li>ul{
+	margin-left: -40px;
+	display: none;
+}
+
+.nav>ul>li>ul>li{
+	position: relative;
+	list-style: none;
+}
+
+.nav>ul>li>a{
+	display: block;
+	min-width: 200px;
+	background: #FFFFFF;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-right: 1px #106BE8 solid;
+	color:#666464;
+	text-decoration: none;
+}
+
+.nav>ul>li>a:hover{
+	background: #D1D1D1;
+}
+
+.nav>ul>li>ul>li>a{
+	display: block;
+	min-width: 200px;
+	background: #3D89A1;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 35px;
+	color:#FFFEFE; 
+	font-size: 17px;
+}
+
+.nav>ul>li>ul>li>a:hover{
+	background:#459DB9;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/*------EXTRAS NAV------*/
+
+.titulo-sub-menu{
+	color:#F3FFFF;
+	text-align: center;
+}
+
+.izquierda{
+	float: left;
+	margin-right: 10px;
+	margin-left:10px;
+	margin-top: 4px;
+}
+.derecha{
+	float: right;
+	margin-right: 5px;
+	margin-top: 5px;
+}
+
+/*------Boton------*/
+.btn-menu{
+	color: #F7F6F6;
+	background: #106BE8;
+	border-radius: 5px;
+	border:2px solid #10DDE8;
+	margin-top:10px;
+	margin-left: 10px;
+	width: 40px;
+	height: 40px;
+}
+

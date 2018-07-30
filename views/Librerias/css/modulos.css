@@ -1,0 +1,67 @@
+.cabecera-tabla2{
+  height: 20px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #8A8686;
+  border-top: none;
+  border-right: none;
+  font-style: italic;
+  text-align: left;
+  padding-left: 20px;
+}
+.cam{
+  height: 25px;
+  font-size: 14px;
+  border-right:none;
+  border-bottom:none;
+  padding: 0px;
+  padding-left: 20px;
+  text-align: left;
+}
+.cam2{
+  border-left:none;
+  border-right:none;
+}
+.cam3{
+  border-left: none;
+}
+.titulos-fim{
+	float: left;
+	height: 60px;
+	width: 150px;
+	text-align: left;
+	font-size: 13px;
+	font-weight: bold;
+}
+.datos-fim{
+	float: left;
+	height: 60px;
+	width: 80px;
+	text-align: left;
+	font-size: 13px;
+	font-weight: bold;
+}
+.fecha-fim{
+	float: left;
+	height: 28px;
+	width: 100px;
+	font-weight: bold;
+	padding-top: 5px;
+}
+.grupo-fim-titulo{
+	float: left;
+	height: 28px;
+	width: 60px;
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 5px;
+}
+.grupo-fim{
+	float: left;
+	text-align: left;
+	height: 28px;
+	width: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 6px;
+}

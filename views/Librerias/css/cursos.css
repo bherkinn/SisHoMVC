@@ -1,0 +1,17 @@
+.cabecera-tabla2{
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #5640FC;
+
+  
+}
+.hora{
+  font-weight: bold;
+}
+.caract{
+  font-size: 13px;
+  text-align: left;
+  padding-left:10px;
+  color: #3218F8;
+}

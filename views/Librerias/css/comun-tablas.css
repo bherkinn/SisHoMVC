@@ -1,0 +1,105 @@
+.table-responsive-horario{
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  max-width: 1066.5px;
+}
+.horas{
+  vertical-align: middle;
+	min-width: 50px;
+  text-align: center;
+  font-size:12px;
+}
+
+.td-periodo{
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.contenido-tabla{
+	min-width: 169px;
+	height: 45px;
+  text-align: center
+
+}
+th, tr{
+	text-align: center;
+}
+.pintado-true{
+  background-color: #94E781;
+  color:#000;
+  font-size: 10px;
+  vertical-align: middle;
+}
+.pintado-false{
+  background-color: #F15757;
+  color:#000;
+  font-size: 10px;
+  vertical-align: middle;
+}
+.ca{
+  height: 20px;
+  font-size: 12px;
+}
+
+.cabecera-tabla{
+  font-weight: bold;
+}
+
+.titulo-tabla{
+  padding: 14px;
+  font-weight: bold;
+  font-size: 28px;
+  color: #787777;
+}
+.rotar 
+    {  
+      -webkit-transform: rotate(-35deg);  
+      -moz-transform: rotate(-35deg);  
+      -ms-transform: rotate(-35deg);  
+      -o-transform: rotate(-35deg);  
+      transform: rotate(-35deg);  
+       
+      -webkit-transform-origin: 50% 30%;  
+      -moz-transform-origin: 50% 30%;  
+      -ms-transform-origin: 50% 30%;  
+      -o-transform-origin: 50% 30%;  
+      transform-origin: 50% 30%;  
+       
+      font-size: 60px;  
+      width: 400px;  
+      height: 100px;
+      margin:auto;
+      text-align: center;
+      left: -10px;
+      top: -440px;
+      font-weight: bold;
+      position: relative;
+      border-radius: 10px;
+      border: 5px solid #F88989;
+      color:#F88989;
+
+    }
+
+  .deshabilitar{
+    display: none;
+  }
+
+  .select2{
+  font-size: 12px;
+  text-align: center;
+  }
+  .select2-dropdown{
+    font-size: 11px;
+  }
+
+  @media screen and (max-width: 450px)
+  {
+    .rotar{
+      font-size: 50px;
+      height: 80px;
+      width: 290px;  
+    }
+  } 
