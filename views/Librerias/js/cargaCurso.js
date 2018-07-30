@@ -72,10 +72,49 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
             }
 
             if(curDisponibleT==1 || curDisponibleP==1)
-            {
+            {   
+// ------------------------En caso tenga carga horaria Teorica y Practicas
                 if(curDisponibleT==1 && curDisponibleP==1)
                 {
+                    for(i=0;i<numCargaT;i++)
+                    {   
+                        if(cursoActual==JsonCargaT[i]["codCurso"])
+                        {
+                            if(JsonCargaT[i]["secCurso"]==JsonCargaT[i+1]["secCurso"] && cursoActual==JsonCargaT[i+1]["codCurso"])
+                            {
+                                totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
+                            }
+                            else
+                            {
+                                totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
 
+                                if(identP==0)
+                                {   
+                                    $("#"+cursoActual+identP).append("<td>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td>"+totalhoras+"</td>"/*+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"*/);
+                                    identP++;
+                                }
+                                else{
+                                    
+                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td>"+totalhoras+"</td></tr>");
+                                    identP++;
+
+                                    $(".ampliar"+cursoActual).attr("rowspan",identP);
+                                }
+                                totalhoras=0;
+                            }
+                            
+                        }else
+                        {
+                            identP=0;
+                        }
+                    }
 // ------------------------En caso solo tenga carga horaria en Practicas
                 }else if(curDisponibleT==0 && curDisponibleP==1){
 
@@ -122,20 +161,41 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
 
                     for(i=0;i<numCargaT;i++)
                     {   
-                        seccion.length=0;
                         if(cursoActual==JsonCargaT[i]["codCurso"])
-                        {   
-                            seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-                            canseccion=seccion.length;
-                            a=0;
-                            while(a<canseccion)
+                        {
+                            if(JsonCargaT[i]["secCurso"]==JsonCargaT[i+1]["secCurso"] && cursoActual==JsonCargaT[i+1]["codCurso"])
                             {
-                                for(c=0;c<numCargaT;c++)
-                                {
-
-                                }
-                                a++;
+                                totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
                             }
+                            else
+                            {
+                                totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
+
+                                if(identP==0)
+                                {   
+                                    $("#"+cursoActual+identP).append("<td>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td>"+totalhoras+"</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>");
+                                    identP++;
+                                }
+                                else{
+                                    
+                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td>"+totalhoras+"</td></tr>");
+                                    identP++;
+
+                                    $(".ampliar"+cursoActual).attr("rowspan",identP);
+                                }
+                                totalhoras=0;
+                            }
+                            
+                        }else
+                        {
+                            identP=0;
                         }
                     }
                 }
@@ -185,6 +245,38 @@ function dividirSeccion(seccion){
         return sec;
     }
 }
+
+
+
+
+
+// else if(curDisponibleT==1 && curDisponibleP==0){
+
+//                     for(i=0;i<numCargaT;i++)
+//                     {   
+//                         seccion.length=0;
+//                         if(cursoActual==JsonCargaT[i]["codCurso"])
+//                         {   
+//                             seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
+//                             canseccion=seccion.length;
+//                             a=0;
+//                             while(a<canseccion)
+//                             {
+//                                 for(c=0;c<numCargaT;c++)
+//                                 {
+//                                     if(cursoActual==JsonCargaT[c]["codCurso"] && JsonCargaT[c]["secCurso"].indexOf(seccion[a])!=-1)
+//                                     {
+                                        
+//                                     }
+//                                 }
+//                                 a++;
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+
+            // ******************************************************************************
 
 // function CrearTablaReportesCargaCurso(JsonCurricular, JsonCarga) {
 //     numCurso = Object.keys(JsonCurricular).length;
