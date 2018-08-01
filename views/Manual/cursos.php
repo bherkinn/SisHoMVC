@@ -26,17 +26,28 @@
 
 	<style type="text/css">
 	 	.cboperiodo{
+			margin-left: 10px;
+			margin-right: 10px;
 			padding: 5px;
 			font-size: 12px;
-			margin-left: 20px;
 		    border-radius: 4px;
-		    position: absolute;
 		}
 		.titulo-tabla{
 			padding: 5px;
 			font-weight: bold;
 			font-size: 28px;
 			color: #787777;
+		}
+		.btn-actualizar-tabla{
+			border:none;
+			border-radius: 4px;
+		}
+		.centrar{
+			margin:auto;
+			display: flex;
+			width: 80%;
+			justify-content: center;
+			margin-bottom: 15px;
 		}
 	 </style>
 
@@ -52,14 +63,13 @@
       <div id="contenedor" class="contenedor-tapar">	
 
 		<center><div class="titulo-tabla">CURSOS - MANUAL</div></center>
-		<div style="margin-bottom: 15px;">
-		<center>
+		<div class="centrar">
 				<select id="select-cursos" class="select-cursos">	
 				</select>
 
 				<select id="cboperiodo" class="cboperiodo " style="font-size: 12px;">
 				</select>
-		</center>
+				<button id="btn-actualizar-tabla" class="fas fa-redo-alt btn-info btn-actualizar-tabla"></button>
 	    </div>
 		
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -222,6 +232,9 @@
 			
 		});
 	}
+	$("#btn-actualizar-tabla").click(function(){
+			mostrarCursos();
+	});
 
     $("#cboperiodo").change(function() {
         $("#cboperiodo option:selected").each(function() {

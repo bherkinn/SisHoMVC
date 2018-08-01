@@ -31,7 +31,9 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
         curDisponibleP = 0;
         identP=0;
         totalhoras = 0;
+        subhorasP= 0;
         seccion=new Array();
+        cadenaCargaPractica="";
         $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
         $('#tabla').append("<thead><th>CURSOS</th>"+
                                   "<th>CODIGO</th>"+
@@ -79,8 +81,19 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                     for(i=0;i<numCargaT;i++)
                     {   
                         if(cursoActual==JsonCargaT[i]["codCurso"])
-                        {
-                            if(JsonCargaT[i]["secCurso"]==JsonCargaT[i+1]["secCurso"] && cursoActual==JsonCargaT[i+1]["codCurso"])
+                        {   
+                            //-------------------------Verificar si esta en el ultimo bucle
+                            if((i+1)<numCargaT)
+                            {
+                                cursoSiguiente=JsonCargaT[i+1]["codCurso"];
+                                seccionSiguiente=JsonCargaT[i+1]["secCurso"]
+                            }
+                            else{
+                                cursoSiguiente="";
+                                seccionSiguiente="";
+                            }
+                            // ------------------------Operar
+                            if(JsonCargaT[i]["secCurso"]==seccionSiguiente && cursoActual==cursoSiguiente)
                             {
                                 totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
                             }
@@ -90,19 +103,66 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
 
                                 if(identP==0)
                                 {   
+                                    // ------------------------------------------------------------------CargaPractica
+                                    seccion.length=0;
+                                    seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
+                                    if(seccion.length==1)
+                                    {
+                                        for(t=0;t<numCargaP;t++)
+                                        {
+                                            for(t=0;t<numCargaP;t++)
+                                            {   
+                                                if(JsonCargaP[t]["secCurso"]==seccion[0] && JsonCargaP[t]["codCurso"]==cursoActual)
+                                                {
+                                                    subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
+                                                    cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
+                                                                              JsonCargaP[t]["nombres"]+"</td><td>"+
+                                                                              subhorasP+"</td>";
+                                                    // cadenaCargaPractica="";
+                                                }
+                                            }
+                                            subhorasP=0;
+                                        }
+                                    }else{
+                                        cadenaCargaPractica="";
+                                    }
+                                    // --------------------------------------------------------------------
+
                                     $("#"+cursoActual+identP).append("<td>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
-                                        "<td>"+totalhoras+"</td>"/*+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"*/);
+                                        "<td>"+totalhoras+"</td>"+cadenaCargaPractica);
                                     identP++;
                                 }
                                 else{
-                                    
+                                    seccion.length=0;
+                                    seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
+                                    if(seccion.length==1)
+                                    {
+                                        seccion.length=0;
+                                        seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
+                                        if(seccion.length==1)
+                                        {
+                                            for(t=0;t<numCargaP;t++)
+                                            {   
+                                                if(JsonCargaP[t]["secCurso"]==seccion[0] && JsonCargaP[t]["codCurso"]==cursoActual)
+                                                {
+                                                    subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
+                                                    cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
+                                                                              JsonCargaP[t]["nombres"]+"</td><td>"+
+                                                                              subhorasP+"</td>";
+                                                    // cadenaCargaPractica="";
+                                                }
+                                                
+                                            }
+                                            subhorasP=0;
+                                        }else{
+                                            cadenaCargaPractica="";
+                                        }  
+                                    }
+
                                     $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
-                                        "<td>"+totalhoras+"</td></tr>");
+                                        "<td>"+totalhoras+"</td>"+cadenaCargaPractica+"</tr>");
                                     identP++;
 
                                     $(".ampliar"+cursoActual).attr("rowspan",identP);
@@ -134,6 +194,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
 
                                 if(identP==0)
                                 {   
+
                                     $("#"+cursoActual+identP).append("<td>"+JsonCargaP[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaP[i]["nombres"]+"</td>"+
                                         "<td>"+totalhoras+"</td>");
@@ -247,6 +308,26 @@ function dividirSeccion(seccion){
 }
 
 
+// if((t+1)<numCargaP)
+                                                // {
+                                                //     cursoS=JsonCargaP[t+1]["codCurso"];
+                                                //     seccionS=JsonCargaP[t+1]["secCurso"]
+                                                // }
+                                                // else{
+                                                //     cursoS="";
+                                                //     seccionS="";
+                                                // }
+                                                // if(JsonCargaP[t]["secCurso"]==seccionS && cursoActual==cursoS)
+                                                // {
+                                                //     subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
+                                                // }
+                                                // else
+                                                // {
+                                                //     subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
+                                                //     cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
+                                                //                               JsonCargaP[t]["nombres"]+"</td><td>"+
+                                                //                               subhorasP+"</td>";
+                                                // }
 
 
 

@@ -57,6 +57,13 @@
 			text-align-last: center;
 			font-size: 13px;
 		}
+		.btn-actualizar-tabla{
+			border:none;
+			border-radius: 4px;
+			width: 30px;
+			height: 29px;
+			margin: 5px;
+		}
 
 	 </style>
 
@@ -95,6 +102,7 @@
 					<select id="cboperiodo" class="form-control cboperiodo">
 					
 					</select>
+					<button id="btn-actualizar-tabla" class="fas fa-redo-alt btn-info btn-actualizar-tabla"></button>
 			</div>
 
 			

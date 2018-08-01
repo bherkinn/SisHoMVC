@@ -5,7 +5,7 @@
 	{
 	    public function obtnerCursosPorCurricula()
 	    {
-	        $sql = "SELECT cursos.nomCurso,curricular.codCurso FROM curricular INNER JOIN cursos ON curricular.codCurso=cursos.codCurso WHERE curricular.verCurricular='2018-2'ORDER BY curricular.codCurso";
+	        $sql = "SELECT DISTINCT cursos.nomCurso,curricular.codCurso FROM curricular INNER JOIN cursos ON curricular.codCurso=cursos.codCurso WHERE curricular.verCurricular='2018-2'ORDER BY curricular.codCurso";
 	        
 	        $this->Conectar(2);
 	        $this->memoria = $this->con2->query($sql);

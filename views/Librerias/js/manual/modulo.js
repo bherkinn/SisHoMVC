@@ -22,6 +22,10 @@ $(document).ready(function(){
         });
     });
 
+    $("#btn-actualizar-tabla").click(function(){
+			Horario();
+	});
+
 });
 
 function llenarComboPeriodo(){
