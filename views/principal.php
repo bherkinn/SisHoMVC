@@ -59,7 +59,11 @@
             <li class="lista">         
                <a class="borrar comun-lista" id="cambiar-curso-fila" href="#"><i class="fas fa-exchange-alt" style="font-size: 14px;"></i> Cambiar Curso </a>  
             </li>
+            <li class="lista">         
+               <a class="borrar comun-lista" id="list-aulas-disponibles" href="#"><i class="far fa-check-square" style="font-size: 14px;"></i> Aulas Disponibles </a>  
+            </li>
          </ul>
+
          <ul id="menucontextual-agregar" class="dropdown-menu-modificado menu-contextual" style="width: 10px;">
             <li class="lista">			
                <a class="borrar comun-lista" id="registrar-fila" href="#"><i class="fas fa-save" style="font-size: 15px;"></i> Registrar </a>	
@@ -237,6 +241,34 @@
          </div>
          <br>
       </div>
+
+      <!--*********************************************** MODAL AULAS DISPONIBLES ******************************************-->
+
+      <div id="modal-aulas-disponibles" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-lg">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">Aulas Vacias</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <div class="container-fluid">
+                        <div id="container-aulas-disponibles">
+                           
+                        </div>
+                     </div>
+                     <br>
+                     <div id="carga-agregar">
+                        
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
       <script type="text/javascript" src="views/Librerias/js/principal.js" >
          $(document).ready(function(){
          	$("#select-cursos").select2({

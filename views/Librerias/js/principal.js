@@ -332,7 +332,7 @@ function CrearTablaPrincipal(datosJson, cboaulas, cbodocentes) {
         "<th class='th'>DIA</th>" +
         "<th class='th'>HORA</th>" +
         // "<th class='th'>CURSO</th>" +
-        "<th class='th'>SECCION</th>" +
+        "<th class='thseccion'>SECCION</th>" +
         "<th class='th'>T/P</th>" +
         "<th class='thaula'>AULA</th>" +
         "<th class='thaula'>AULA 2</th>" +
@@ -719,6 +719,89 @@ $("#cambiar-curso-fila").click(function(e){
                 }
 });
 
+$("#list-aulas-disponibles").click(function(e){
+    e.preventDefault();
+
+    $('#modal-aulas-disponibles').modal('show');
+    dia=$("#txtdia"+trderecho).val();
+    cboPeriodo=$("#cboperiodo option:selected").text();
+    hora=$("#txthora"+trderecho).val();
+    buscarAulasVacia(dia,hora,cboPeriodo);
+
+});
+
+aulasLLenas=new Array();
+function buscarAulasVacia(dia,hora,periodo){
+    aulasLLenas.length=0;
+    
+    a=0;
+    $('#container-aulas-disponibles').html(dia+"-"+hora+"<br>");
+    $.get("views/Anexos/principal.php",{accion:"cargaHorariaPorDia",dia:dia,periodo:periodo},
+        function(data){
+            
+            JsonCargaPorDia=JSON.parse(data);
+            canCargaPorDia=Object.keys(JsonCargaPorDia).length;
+            canAulas=Object.keys(cboaulas).length;
+            for(j=0;j<canCargaPorDia;j++)
+            {
+                if(compararHoras(hora,String(JsonCargaPorDia[j]["hora"]))=="SI")
+                {
+                    aulasLLenas[a]=JsonCargaPorDia[j]["codAula"];
+                   
+                    a++;
+                    // alert("hola");
+                }
+                console.log(hora);
+            }
+
+            for(u=0;u<canAulas;u++)
+            {   
+                ocupado=0;
+                for(k=0;k<aulasLLenas.length;k++)
+                {
+                    if(cboaulas[u]["aula"]==aulasLLenas[k])
+                    {
+                        ocupado=1;
+                    }
+                }
+
+                if(ocupado==0)
+                {
+                    $('#container-aulas-disponibles').append(cboaulas[u]["aula"]+"<br>");
+                }
+            }
+            
+
+        });
+
+}
+function compararHoras(hora,horacarga){
+
+    hinicial=hora.substring(0,2);
+    hfinal=hora.substring(3,5);
+
+    hinicial=parseInt(hinicial);
+    hfinal=parseInt(hfinal);
+
+    hicarga=horacarga.substring(0,2);
+    hfcarga=horacarga.substring(3,5);
+
+    hicarga=parseInt(hicarga);
+    hfcarga=parseInt(hfcarga);
+
+    ocupado="NO";
+
+    for(inicial=hicarga;inicial<=hfcarga;inicial++)
+    {
+        if(inicial>=hinicial && inicial<=hfinal)
+        {
+            ocupado="SI";
+        }
+    }
+
+    return ocupado;
+}
+
 // -------------------------------------------BOTONES DE LA TABLA PRINCIPAL----------------------------------------
 
 $("#btn-cambiartotal-curso").click(function(){
@@ -1042,12 +1125,13 @@ function guardar() {
     datos.append("txtc9", $("#txtc9").val());
     datos.append("txtc10", $("#txtc10").val());
     datos.append("cboperiodo", $("#cboperiodo option:selected").text());
+    datos.append("accion","registrar");
 
     $.ajax({
 
         type: "POST",
         data: datos,
-        url: "anexos/registrar.php",
+        url: "views/Anexos/principal.php",
         contentType: false,
         processData: false,
         success: function(resultado) {
@@ -1092,9 +1176,6 @@ function actualizar(indice) {
         success: function(resultado) {
             // console.log($("#select-docentes"+indice).val());
         }
-
-
-
     });
 }
 
@@ -1121,12 +1202,13 @@ function duplicar(indice) {
     datos.append("txtc9", $("#txtc9" + indice).val());
     datos.append("txtc10", $("#txtc10" + indice).val());
     datos.append("cboperiodo", $("#cboperiodo option:selected").text());
+    datos.append("accion","registrar");
 
     $.ajax({
 
         type: "POST",
         data: datos,
-        url: "anexos/registrar.php",
+        url: "views/Anexos/principal.php",
         contentType: false,
         processData: false,
         success: function(resultado) {

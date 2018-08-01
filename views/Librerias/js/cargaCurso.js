@@ -115,22 +115,28 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                                 if(JsonCargaP[t]["secCurso"]==seccion[0] && JsonCargaP[t]["codCurso"]==cursoActual)
                                                 {
                                                     subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
-                                                    cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
-                                                                              JsonCargaP[t]["nombres"]+"</td><td>"+
-                                                                              subhorasP+"</td>";
-                                                    // cadenaCargaPractica="";
+                                                    cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td>"+
+                                                                        "<td>"+JsonCargaP[t]["nombres"]+"</td>"+
+                                                                        "<td>"+subhorasP+"</td>";
                                                 }
                                             }
                                             subhorasP=0;
                                         }
                                     }else{
                                         cadenaCargaPractica="";
+                                        if(seccion.length>1)
+                                        {
+                                            for(k=0;k<seccion.length;k++)
+                                            {
+
+                                            }
+                                        }
                                     }
                                     // --------------------------------------------------------------------
 
-                                    $("#"+cursoActual+identP).append("<td>"+JsonCargaT[i]["secCurso"]+"</td>"+
-                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
-                                        "<td>"+totalhoras+"</td>"+cadenaCargaPractica);
+                                    $("#"+cursoActual+identP).append("<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+totalhoras+"</td>"+cadenaCargaPractica);
                                     identP++;
                                 }
                                 else{
@@ -150,7 +156,6 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                                     cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
                                                                               JsonCargaP[t]["nombres"]+"</td><td>"+
                                                                               subhorasP+"</td>";
-                                                    // cadenaCargaPractica="";
                                                 }
                                                 
                                             }
@@ -160,9 +165,9 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                         }  
                                     }
 
-                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
-                                        "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
-                                        "<td>"+totalhoras+"</td>"+cadenaCargaPractica+"</tr>");
+                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+totalhoras+"</td>"+cadenaCargaPractica+"</tr>");
                                     identP++;
 
                                     $(".ampliar"+cursoActual).attr("rowspan",identP);

@@ -1,6 +1,6 @@
 @font-face{
 	font-family: 'Roboto';
-	src:/*url("../Roboto/Roboto-Black.ttf"), url("../Roboto/Roboto-BlackItalic.ttf"), url("../Roboto/Roboto-Bold.ttf"), url("../Roboto/Roboto-BoldItalic.ttf"),*/ url("../Roboto/Roboto-Italic.ttf")/*, url("../Roboto/Roboto-Light.ttf"), url("../Roboto/Roboto-LightItalic.ttf"), url("../Roboto/Roboto-Medium.ttf"), url("../Roboto/Roboto-MediumItalic.ttf"), url("../Roboto/Roboto-Regular.ttf"), url("../Roboto/Roboto-Thin.ttf"), url("../Roboto/Roboto-ThinItalic.ttf")*/;
+	src:/*url("../Roboto/Roboto-Black.ttf"), url("../Roboto/Roboto-BlackItalic.ttf"), url("../Roboto/Roboto-Bold.ttf"), url("../Roboto/Roboto-BoldItalic.ttf"), url("../Roboto/Roboto-Italic.ttf"), url("../Roboto/Roboto-Light.ttf"), url("../Roboto/Roboto-LightItalic.ttf"), url("../Roboto/Roboto-Medium.ttf"), url("../Roboto/Roboto-MediumItalic.ttf"),*/ url("../Roboto/Roboto-Regular.ttf"),/* url("../Roboto/Roboto-Thin.ttf"), url("../Roboto/Roboto-ThinItalic.ttf")*/;
 
 }
 

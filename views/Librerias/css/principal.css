@@ -218,6 +218,12 @@ body{
 	padding-left: 9px;
 	text-align: center;
 }
+.thseccion{
+	max-width: 65px;
+	padding-right: 9px;
+	padding-left: 9px;
+	text-align: center;
+}
 .thdocente{
 	text-align: center;
 	min-width: 200px;

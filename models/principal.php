@@ -110,7 +110,7 @@
 	    {
 	        
 	        $this->Open(2);
-	        $this->memoria = $this->con2->query("SELECT aula FROM aulas");
+	        $this->memoria = $this->con2->query("SELECT * FROM aulas");
 	        $datos= $this->memoria->fetchAll(PDO::FETCH_OBJ);
 	        $this->Close(2);
 	        return $datos;
@@ -170,10 +170,9 @@
 
 	    public function MostrarHorariosTabla($curso, $ciclo, $estado){
 
-	    	$this->Open(1);
-        
 	        $sql = "SELECT * FROM basehorarios WHERE codCurso='$curso' and perAcademico='$ciclo' and estado=$estado ORDER BY orden,idHorarios;";
-	        
+
+	        $this->Open(1);
 	        $this->memoria = $this->con1->query($sql);
 	        
 	        if (!empty($this->memoria)) {
@@ -206,6 +205,24 @@
 	        }
 	    }
 
+	    // Aulas Disponibles
+
+	    public function horarioPorDia($dia,$periodo){
+	    	$sql="SELECT codCurso,codAula,dia,hora from basehorarios WHERE dia='$dia' and perAcademico='$periodo'";
+	    	$this->Open(1);
+	        $this->memoria = $this->con1->query($sql);
+	        
+	        if (!empty($this->memoria)) {
+	            $datos = $this->memoria->fetchAll(PDO::FETCH_OBJ);
+	            $this->Close(1);
+	            
+	            return $datos;
+	        } else {
+	            
+	            return "vacio";
+	            
+	        }
+	    }
 
 	}
 ?>
