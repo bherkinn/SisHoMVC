@@ -249,15 +249,17 @@
             <div class="modal-dialog modal-lg">
                <div class="modal-content">
                   <div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLabel">Aulas Vacias</h5>
+                     <h5 class="modal-title" id="exampleModalLabel"><div id="titulo-aulas-disponibles" class="container" style=""></div></h5>
                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                      </button>
                   </div>
                   <div class="modal-body">
                      <div class="container-fluid">
-                        <div id="container-aulas-disponibles">
+                        <div class="table-responsive">
+                           <div id="container-aulas-disponibles" class="container-fluid">
                            
+                           </div>
                         </div>
                      </div>
                      <br>
@@ -268,6 +270,8 @@
                </div>
             </div>
          </div>
+
+         <!-- ***************************************************************************************************************** -->
 
       <script type="text/javascript" src="views/Librerias/js/principal.js" >
          $(document).ready(function(){

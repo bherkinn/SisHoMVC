@@ -138,6 +138,12 @@
 				echo json_encode($o->horarioPorDia($dia,$periodo));
 				break;
 
+			case 'cambiarAula':
+				$id=$_POST["id"];
+				$aula=$_POST["aula"];
+				echo $o->cambiarAula($id,$aula);
+				break;
+
 			default:
 				
 				break;

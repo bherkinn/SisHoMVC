@@ -6,7 +6,7 @@
 		public function cboAulas()
 	    {
 	        $this->Open(2);
-	        $this->memoria = $this->con2->query("SELECT aula FROM aulas");
+	        $this->memoria = $this->con2->query("SELECT aula FROM aulas WHERE estado='1'");
 	        $datos=$this->memoria->fetchAll(PDO::FETCH_OBJ);
 	        $this->Close(2);
 	        return $datos;

@@ -147,7 +147,10 @@ body{
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }*/
-
+#tabla-aulas-dispoibles>tr>td{
+	text-align: center;
+	font-size: 14px;
+}
 .cboperiodo{
 	padding: 5px;
 	font-size: 12px;
@@ -182,25 +185,22 @@ body{
 }
 
 /******************************TABLA*********************************/
-.table-responsive{
+.table-responsive-principal{
 	margin: auto;
 	padding: 0px;
 	font-size: 12px;
 	max-width: 962px;
 	overflow-y:hidden;
-
 }
 
-.table-responsive-bootstrap{
+.table-responsive-bt{
 	padding: 0px;
 	font-size: 12px;
 	max-width: 2000px;
 	overflow-y:hidden;
-
 }
 
-.tabla-principal
-{
+.tabla-principal{
 	min-width: 960px;
 	max-width: 960px;
 	width: 960px;
@@ -368,5 +368,28 @@ body{
 	color: #3EBBD2;
 }
 
+/*Aula disponible*/
+
+.table-aulas-disponibles{
+	width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+.table-aulas-disponibles th,
+.table-aulas-disponibles td {
+  padding-left: 1.14rem;
+  padding-right: 1.14rem;
+  vertical-align: center;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+  font-size:13px;
+}
+.btn-cambiar{
+	border:none;
+	border-radius: 5px;
+	padding: 5px 10px 5px 10px;
+	margin-top:5px;
+	margin-bottom: 5px;
+}
 
 

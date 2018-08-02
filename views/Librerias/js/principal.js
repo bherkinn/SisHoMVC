@@ -318,7 +318,7 @@ function CrearCorrespondencia(){
 var cadenaCorrespondecia="";
 
 function CrearTablaPrincipal(datosJson, cboaulas, cbodocentes) {
-    $("#tabla-carga").attr("class", "table-responsive border rounded");
+    $("#tabla-carga").attr("class", "table-responsive-principal border rounded");
     var cantidad = Object.keys(datosJSON).length;
     var cantidadAulas = Object.keys(cboaulas).length;
     var cantidadDocentes = Object.keys(cbodocentes).length;
@@ -732,10 +732,12 @@ $("#list-aulas-disponibles").click(function(e){
 
 aulasLLenas=new Array();
 function buscarAulasVacia(dia,hora,periodo){
+    aulaactual=$('#select-aulas'+trderecho).val()
     aulasLLenas.length=0;
-    
     a=0;
-    $('#container-aulas-disponibles').html(dia+"-"+hora+"<br>");
+    $('#titulo-aulas-disponibles').html("Aula Actual: "+aulaactual+" ("+mostrarDia(dia)+" "+hora+")<br>");
+    $('#container-aulas-disponibles').html("<table border='1' id='tabla-aulas-disponibles' class='table-aulas-disponibles border rounded'></table>");
+    $('#tabla-aulas-disponibles').append("<tr><th>Aulas</th><th>Capacidad</th><th>Tipo/Entrada</th><th>Tipo Pizarra</th><th>Taburete</th><th>PC/DOC</th><th>Cambiar</th></tr>");
     $.get("views/Anexos/principal.php",{accion:"cargaHorariaPorDia",dia:dia,periodo:periodo},
         function(data){
             
@@ -747,9 +749,7 @@ function buscarAulasVacia(dia,hora,periodo){
                 if(compararHoras(hora,String(JsonCargaPorDia[j]["hora"]))=="SI")
                 {
                     aulasLLenas[a]=JsonCargaPorDia[j]["codAula"];
-                   
                     a++;
-                    // alert("hola");
                 }
                 console.log(hora);
             }
@@ -764,16 +764,21 @@ function buscarAulasVacia(dia,hora,periodo){
                         ocupado=1;
                     }
                 }
-
                 if(ocupado==0)
                 {
-                    $('#container-aulas-disponibles').append(cboaulas[u]["aula"]+"<br>");
+
+                    $('#tabla-aulas-disponibles').append("<tr><td>"+cboaulas[u]["aula"]+"</td>"+
+                                                        "<td>"+cboaulas[u]["capacidad"]+"</td>"+
+                                                        "<td>"+cboaulas[u]["tipEntrada"]+"</td>"+
+                                                        "<td>"+cboaulas[u]["pizarra"]+"</td>"+
+                                                        "<td>"+mostrarCondicion(cboaulas[u]["taburete"])+"</td>"+
+                                                        "<td>"+mostrarCondicion(cboaulas[u]["pcDocente"])+"</td>"+
+                                                        "<td><button onclick=\"cambiarAula(\'"+cboaulas[u]["aula"]+"\')\" class='fas fa-exchange-alt btn-cambiar btn-primary'></button></td>"+"</tr>");
                 }
             }
             
-
         });
-
+    // let activoFijo = $('input[name="activoFijo"]:checked').val();
 }
 function compararHoras(hora,horacarga){
 
@@ -800,6 +805,63 @@ function compararHoras(hora,horacarga){
     }
 
     return ocupado;
+}
+
+function mostrarDia(dia)
+{
+    switch(dia){
+        case 'LU':return "Lunes";
+        break;
+        case 'MA':return "Martes";
+        break;
+        case 'MI':return "Miercoles";
+        break;
+        case 'JU':return "Jueves";
+        break;
+        case 'VI':return "Viernes";
+        break;
+        case 'SA':return "Sabado";
+        break;
+        default:
+        break
+    }
+}
+
+function mostrarCondicion(confirmacion)
+{
+    switch(confirmacion){
+        case '1':
+        return "Si";
+        break;
+
+        case '0':
+        return "No";
+        break;
+
+        default:
+        break;
+    }
+}
+
+function cambiarAula(aula){
+    alertify.confirm("Esta a punto de Cambiar el Aula "+$('#select-aulas'+trderecho).val()+" por el aula "+aula+"<br><br>¿Desea Continuar?",
+    function(){
+          $.post("views/Anexos/principal.php",{accion:"cambiarAula",id:trderecho,aula:aula},
+            function(data){
+                if(data=='ok')
+                {   
+                    $('#modal-aulas-disponibles').modal('hide');
+                    $("#select-aulas"+trderecho).val(aula);
+                    $("#select-aulas"+trderecho).change();
+                    alertify.success("Aula Cambiada");
+                }else{
+                    alertify.error("Error al Cambiar");
+                }
+            });
+    },
+    function(){
+
+    });
 }
 
 // -------------------------------------------BOTONES DE LA TABLA PRINCIPAL----------------------------------------

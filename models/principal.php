@@ -110,7 +110,7 @@
 	    {
 	        
 	        $this->Open(2);
-	        $this->memoria = $this->con2->query("SELECT * FROM aulas");
+	        $this->memoria = $this->con2->query("SELECT * FROM aulas WHERE estado='1'");
 	        $datos= $this->memoria->fetchAll(PDO::FETCH_OBJ);
 	        $this->Close(2);
 	        return $datos;
@@ -222,6 +222,18 @@
 	            return "vacio";
 	            
 	        }
+	    }
+
+	    public function cambiarAula($id,$aula)
+	    {
+	    	try {
+	    		$this->Open(1);
+	        	$this->con1->query("UPDATE basehorarios SET codAula='$aula' WHERE idHorarios=$id");
+	        	return "ok";
+	    	} catch (Exception $e) {
+	    		return "error";
+	    	}
+	    	
 	    }
 
 	}
