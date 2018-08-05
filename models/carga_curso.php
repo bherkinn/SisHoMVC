@@ -2,7 +2,8 @@
 	require_once("conexion.php");
 
 	Class CargaCurso extends Conexion
-	{
+	{	
+		
 	    public function obtnerCursosPorCurricula()
 	    {
 	        $sql = "SELECT DISTINCT cursos.nomCurso,curricular.codCurso FROM curricular INNER JOIN cursos ON curricular.codCurso=cursos.codCurso WHERE curricular.verCurricular='2018-2'ORDER BY curricular.codCurso";

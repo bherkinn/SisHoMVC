@@ -10,8 +10,9 @@
 	border: 1px solid #dee2e6 !important;
 }
 
-.tabla-reporte-carga-curso{
-	
+.tabla-carga-curso{
+	width: 100%;
+    max-width: 100%;
 }
 
 td{
@@ -26,11 +27,22 @@ th{
 	padding-right: 5px;
 	padding-left: 5px;
 }
-.tdnomcodigo{
+/*.tdnomcodigo{
 	width:150px;
 }
 
 .tdcodigo{
 	width: 50px;
-	/*text-align: center;*/
+	text-align: center;
+}*/
+
+.cboDepartamento{
+	padding: 5px;
+	text-align-last: center;
+	border-radius: 4px;
+	color: #757575;
+	font-size: 15px;
+	float: right;
+	position: relative;
+	margin-bottom: 15px;
 }

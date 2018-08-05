@@ -50,8 +50,8 @@
          
          <!-- ******************************************************MENUS CONTEXTUALES**************************************************** -->
          <ul id="menucontextual" class="dropdown-menu-modificado menu-contextual" style="width: 10px;">
-            <li class="lista">			
-               <a class="borrar comun-lista" id="eliminar-fila" href="#"><i class="fas fa-trash" style="font-size: 15px;"></i> Borrar </a>	
+            <li class="lista">         
+               <a class="borrar comun-lista" id="list-aulas-disponibles" href="#"><i class="far fa-check-square" style="font-size: 14px;"></i> Aulas Disponibles </a>  
             </li>
             <li class="lista">			
                <a class="borrar comun-lista" id="duplicar-fila" href="#"><i class="fas fa-copy" style="font-size: 14px;"></i> Duplicar </a>	
@@ -59,8 +59,9 @@
             <li class="lista">         
                <a class="borrar comun-lista" id="cambiar-curso-fila" href="#"><i class="fas fa-exchange-alt" style="font-size: 14px;"></i> Cambiar Curso </a>  
             </li>
+            
             <li class="lista">         
-               <a class="borrar comun-lista" id="list-aulas-disponibles" href="#"><i class="far fa-check-square" style="font-size: 14px;"></i> Aulas Disponibles </a>  
+               <a class="borrar comun-lista" id="eliminar-fila" href="#"><i class="fas fa-trash" style="font-size: 15px;"></i> Borrar </a>   
             </li>
          </ul>
 

@@ -30,11 +30,16 @@
        		<center>
        			<div class="cabecera-contenedor"> CARGA CURSO</div>
        		</center>
-			
+                              
        		<div class="container-fluid ">
        			<div class="container-fluid">
+                              <select id="cboDepartamento" class="cboDepartamento">
+                                          <option>DAIA</option>
+                                          <option>DACBAHCC</option>
+                                          <option>DACI</option>
+                              </select>
        				<div id="contenedor-carga-curso">
-
+                                    
        				</div>
               <br>
        			</div>
