@@ -90,7 +90,7 @@
 	    {
 	        
 	        $this->Open(2);
-	        $this->memoria = $this->con2->query("(SELECT DISTINCT horariosfim.basehorarios.codCurso,oeraae2018.cursos.nomCurso FROM horariosfim.basehorarios LEFT JOIN oeraae2018.cursos ON horariosfim.basehorarios.codCurso=oeraae2018.cursos.codCurso WHERE estado='1' and perAcademico='2018-2') UNION (SELECT DISTINCT oeraae2018.curricular.codCurso,oeraae2018.cursos.nomCurso FROM oeraae2018.curricular LEFT JOIN oeraae2018.cursos ON oeraae2018.curricular.codCurso=oeraae2018.cursos.codCurso WHERE verCurricular='2018-2') ORDER BY codCurso");
+	        $this->memoria = $this->con2->query("(SELECT DISTINCT horariosfim.basehorarios.codCurso,oeraae2018.cursos.nomCurso FROM horariosfim.basehorarios LEFT JOIN oeraae2018.cursos ON horariosfim.basehorarios.codCurso=oeraae2018.cursos.codCurso WHERE horariosfim.basehorarios.estado='1' and horariosfim.basehorarios.perAcademico='2018-2') UNION (SELECT DISTINCT oeraae2018.curricular.codCurso,oeraae2018.cursos.nomCurso FROM oeraae2018.curricular LEFT JOIN oeraae2018.cursos ON oeraae2018.curricular.codCurso=oeraae2018.cursos.codCurso WHERE verCurricular='2018-2') ORDER BY codCurso");
 	        $datos= $this->memoria->fetchAll(PDO::FETCH_OBJ);
 	        $this->Close(2);
 	        return $datos;

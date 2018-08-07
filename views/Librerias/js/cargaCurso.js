@@ -2,7 +2,7 @@ $(document).ready(function() {
     // ------Curso Por Curricula-----
     // dividirSeccion("A/B/C");
     // calcularHoras("12-14");
-
+    $("#contenedor-carga-curso").append('<img class="imgcargando container-fluid" src="views/Librerias/img/cargando.gif"/>').fadeIn();
     $.get("views/Anexos/carga_curso.php", {
                 accion: "cursos"
             },
@@ -17,12 +17,40 @@ $(document).ready(function() {
                     accion: "reporteCursosP"
                     },
                     function(data3) {
+                        $(".imgcargando").fadeOut();
                         CrearTablaReportesCargaCurso(JSON.parse(data1), JSON.parse(data2), JSON.parse(data3));
+
+                        dep=$("#cboDepartamento").val();
+                        CambioDepartamento(dep);
+                        mostrarhora();
+                        
                     });
                 });
         });
 
-})
+    $("#cboDepartamento").change(function() {
+        $("#cboDepartamento option:selected").each(function() {
+            dep=$("#cboDepartamento").val();
+            CambioDepartamento(dep);
+        });
+    });
+
+});
+function mostrarhora(){ 
+var f=new Date();
+cad=f.getHours()+":"+f.getMinutes()+":"+f.getSeconds(); 
+window.status =cad;
+$("#fecha").html(fecha()+" "+cad);
+setTimeout("mostrarhora()",1000); 
+}
+
+function CambioDepartamento(departamento){
+    $(".DACBAHCC").hide();
+    $(".DACI").hide();
+    $(".DAIA").hide();
+    $("."+departamento).show();
+
+}
 
 function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
 
@@ -39,8 +67,11 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
         secDisponible=0;
         primeraSeccion=0;
         contador=0;
+        _numerador=0;
+
+        n1=1; n2=1;n3=1;
         $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-carga-curso border'>");
-        $('#tabla').append("<thead><th>CURSOS</th>"+
+        $('#tabla').append("<thead><th>N°</th><th>CURSOS</th>"+
                                   "<th>CODIGO</th>"+
                                   "<th>SEC</th>"+
                                   "<th>PROFESOR-TEORIA</th>"+
@@ -50,17 +81,36 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                   "<th>HORAS</th>"+
                            "<thead>");
         for(i=0;i<numCurso;i++)
-        {
-             $("#tabla").append("<tr id='"+JsonCursos[i]["codCurso"]+"0'>"+
+        {   
+            if(String(JsonCursos[i]["depAcademico"])==="DACI")
+            {
+                _numerador=n1;
+                n1++;
+
+            }
+            if(String(JsonCursos[i]["depAcademico"])==="DAIA")
+            {
+                _numerador=n2;
+                n2++;
+            }
+            if(String(JsonCursos[i]["depAcademico"])==="DACBAHCC")
+            {
+                _numerador=n3;
+                n3++;
+            }
+            $("#tabla").append("<tr id='"+JsonCursos[i]["codCurso"]+"0' class='"+JsonCursos[i]["depAcademico"]+"'>"+
+                                "<td class='ampliar"+JsonCursos[i]["codCurso"]+"'>"+_numerador+"</td>"+
                                 "<td class='ampliar"+JsonCursos[i]["codCurso"]+"'>"+JsonCursos[i]["nomCurso"]+"</td>" +
                                 "<td class='ampliar"+JsonCursos[i]["codCurso"]+"'>"+JsonCursos[i]["codCurso"]+"</td>" +
                                 "</tr>");
+             
         }
 
         for(u=0;u<numCurso;u++)
         {   
             cursoActual=JsonCursos[u]["codCurso"];
             cursoSiguiente="";
+            departamento=JsonCursos[u]["depAcademico"];
             // Revisamos en la carga por teoria
             for(i=0;i<numCargaT;i++)
             {
@@ -114,7 +164,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                     if($("#"+cursoActual+(identP-1)).length > 0)
                                     {   
                                         secCadena=seccionSinSlash(JsonCargaT[i]["secCurso"]);
-                                        $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"' class='"+departamento+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
                                         "<td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+totalhoras+"</td>"+"</tr>");
                                         $(".ampliar"+cursoActual).attr("rowspan",(identP+1));
@@ -122,7 +172,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                     else
                                     {   
                                         secCadena=seccionSinSlash(JsonCargaT[i]["secCurso"]);
-                                        $("."+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                        $("."+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"' class='"+departamento+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
                                         "<td class='ampliar"+JsonCargaT[i]["codCurso"]+secCadena+"'>"+totalhoras+"</td>"+"</tr>");
                                         $(".ampliar"+cursoActual).attr("rowspan",(identP+1));
@@ -133,25 +183,6 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                 seccion.length=0;
                                 seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
                                 secCadena=seccionSinSlash(JsonCargaT[i]["secCurso"]);
-                                // rowcurso=$(".ampliar"+cursoActual).attr("rowspan");
-                                // rowseccion=$(".ampliar"+cursoActual+secCadena).attr("rowspan");
-                                // if(rowcurso)
-                                // {   numrow=parseInt(rowcurso);
-                                //     // $(".ampliar"+cursoActual).attr("rowspan",numrow++);
-                                // }
-                                // else{
-                                //     numrow=1;
-                                //     // $(".ampliar"+cursoActual).attr("rowspan",2);
-                                // }
-
-                                // if(rowseccion)
-                                // {   numrowsec=parseInt(rowseccion);
-                                //     // $(".ampliar"+cursoActual+secCadena).attr("rowspan",numrowsec++);
-                                // }
-                                // else{
-                                //     // $(".ampliar"+cursoActual+secCadena).attr("rowspan",2);
-                                //     numrowsec=1;
-                                // }
 
                                 for(t=0;t<numCargaP;t++)
                                 {
@@ -205,9 +236,9 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                                     }else{
                                                         console.log("secciones bucle : curso:"+cursoActual+"Secc"+seccion[g]);
                                                         cadenaCargaPractica=cadenaCargaPractica.replace(cursoActual+identP,"");
-                                                        cadenaCargaPractica=cadenaCargaPractica+"<tr class='"+cursoActual+identP+"'><td>"+JsonCargaP[t]["secCurso"]+"</td>"+
-                                                                    "<td>"+JsonCargaP[t]["nombres"]+"</td>"+
-                                                                    "<td>"+subhorasP+"</td></tr>";
+                                                        cadenaCargaPractica=cadenaCargaPractica+"<tr class='"+cursoActual+identP+" "+departamento+"'><td>"+JsonCargaP[t]["secCurso"]+"</td>"+
+                                                                                                "<td>"+JsonCargaP[t]["nombres"]+"</td>"+
+                                                                                                "<td>"+subhorasP+"</td></tr>";
                                                         console.log(cadenaCargaPractica);
                                                         rowseccion=$(".ampliar"+cursoActual+secCadena).attr("rowspan");
                                                         console.log("-----"+cursoActual+"-"+rowseccion+"-"+contador);
@@ -220,13 +251,6 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                                             $(".ampliar"+cursoActual+secCadena).attr("rowspan",numrowsec+1);
                                                         }
                                                         contador++;
-                                                        
-                                                        // numrow++;
-                                                        // numrowsec++;
-                                                        // // ------------------------
-                                                        // $(".ampliar"+cursoActual).attr("rowspan",numrow);
-                                                        // $(".ampliar"+cursoActual+secCadena).attr("rowspan",numrowsec);
-                                                        
                                                     }
                                                     subhorasP=0;
                                                 }
@@ -272,99 +296,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                 identP++;
                                 totalhoras=0;
                             }
-                            //-------------------------Verificar si esta en el ultimo bucle
-                            // if((i+1)<numCargaT)
-                            // {
-                            //     cursoSiguiente=JsonCargaT[i+1]["codCurso"];
-                            //     seccionSiguiente=JsonCargaT[i+1]["secCurso"]
-                            // }
-                            // else{
-                            //     cursoSiguiente="";
-                            //     seccionSiguiente="";
-                            // }
-                            // // ------------------------Operar
-                            // if(JsonCargaT[i]["secCurso"]==seccionSiguiente && cursoActual==cursoSiguiente)
-                            // {
-                            //     totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
-                            // }
-                            // else
-                            // {
-                            //     totalhoras=calcularHoras(JsonCargaT[i]["hora"])+totalhoras;
-
-                            //     if(identP==0)
-                            //     {   
-                            //         // ------------------------------------------------------------------CargaPractica
-                            //         seccion.length=0;
-                            //         seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-                            //         if(seccion.length==1)
-                            //         {
-                            //             for(t=0;t<numCargaP;t++)
-                            //             {
-                            //                 for(t=0;t<numCargaP;t++)
-                            //                 {   
-                            //                     if(JsonCargaP[t]["secCurso"]==seccion[0] && JsonCargaP[t]["codCurso"]==cursoActual)
-                            //                     {
-                            //                         subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
-                            //                         cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td>"+
-                            //                                             "<td>"+JsonCargaP[t]["nombres"]+"</td>"+
-                            //                                             "<td>"+subhorasP+"</td>";
-                            //                     }
-                            //                 }
-                            //                 subhorasP=0;
-                            //             }
-                            //         }else{
-                            //             cadenaCargaPractica="";
-                            //             if(seccion.length>1)
-                            //             {
-                            //                 for(k=0;k<seccion.length;k++)
-                            //                 {
-
-                            //                 }
-                            //             }
-                            //         }
-                            //         // --------------------------------------------------------------------
-
-                            //         $("#"+cursoActual+identP).append("<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
-                            //             "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
-                            //             "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+totalhoras+"</td>"+cadenaCargaPractica);
-                            //         identP++;
-                            //     }
-                            //     else{
-                            //         seccion.length=0;
-                            //         seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-                            //         if(seccion.length==1)
-                            //         {
-                            //             seccion.length=0;
-                            //             seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-                            //             if(seccion.length==1)
-                            //             {
-                            //                 for(t=0;t<numCargaP;t++)
-                            //                 {   
-                            //                     if(JsonCargaP[t]["secCurso"]==seccion[0] && JsonCargaP[t]["codCurso"]==cursoActual)
-                            //                     {
-                            //                         subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
-                            //                         cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
-                            //                                                   JsonCargaP[t]["nombres"]+"</td><td>"+
-                            //                                                   subhorasP+"</td>";
-                            //                     }
-                                                
-                            //                 }
-                            //                 subhorasP=0;
-                            //             }else{
-                            //                 cadenaCargaPractica="";
-                            //             }  
-                            //         }
-
-                            //         $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["secCurso"]+"</td>"+
-                            //             "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+JsonCargaT[i]["nombres"]+"</td>"+
-                            //             "<td class='ampliar"+JsonCargaT[i]["codCurso"]+JsonCargaT[i]["secCurso"]+"'>"+totalhoras+"</td>"+cadenaCargaPractica+"</tr>");
-                            //         identP++;
-
-                            //         $(".ampliar"+cursoActual).attr("rowspan",identP);
-                            //     }
-                            //     totalhoras=0;
-                            // }
-                            
+                           
                         }else
                         {
                             identP=0;
@@ -373,7 +305,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
 // ------------------------En caso solo tenga carga horaria en Practicas
                 }else if(curDisponibleT==0 && curDisponibleP==1){
 
-                $("#"+cursoActual+"0").append("<td class='ampliar"+cursoActual+"'>Vacio</td><td class='ampliar"+cursoActual+"'>Vacio</td><td class='ampliar"+cursoActual+"'>Vacio</td>");
+                $("#"+cursoActual+"0").append("<td class='ampliar"+cursoActual+"'></td><td class='ampliar"+cursoActual+"'></td><td class='ampliar"+cursoActual+"'></td>");
 
                     for(i=0;i<numCargaP;i++)
                     {   
@@ -397,7 +329,7 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                 }
                                 else{
                                     
-                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaP[i]["secCurso"]+"</td>"+
+                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"' class='"+departamento+"'><td>"+JsonCargaP[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaP[i]["nombres"]+"</td>"+
                                         "<td>"+totalhoras+"</td></tr>");
                                     identP++;
@@ -432,14 +364,14 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                                     $("#"+cursoActual+identP).append("<td>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
                                         "<td>"+totalhoras+"</td>"+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>"+
-                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'>vacio</td>");
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'></td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'></td>"+
+                                        "<td class='ampliar"+JsonCargaT[i]["codCurso"]+"'></td>");
                                     identP++;
                                 }
                                 else{
                                     
-                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
+                                    $("#"+cursoActual+(identP-1)).after("<tr id='"+JsonCursos[u]["codCurso"]+identP+"' class='"+departamento+"'><td>"+JsonCargaT[i]["secCurso"]+"</td>"+
                                         "<td>"+JsonCargaT[i]["nombres"]+"</td>"+
                                         "<td>"+totalhoras+"</td></tr>");
                                     identP++;
@@ -457,28 +389,13 @@ function CrearTablaReportesCargaCurso(JsonCursos,JsonCargaT,JsonCargaP){
                 }
             }
             else{
-                $("#"+cursoActual+"0").append("<td>Vacio</td><td>Vacio</td><td>Vacio</td><td>Vacio</td><td>Vacio</td><td>Vacio</td>");
+                $("#"+cursoActual+"0").append("<td></td><td></td><td></td><td></td><td></td><td></td>");
 
             }
             curDisponibleT=0;
             curDisponibleP=0;
         }   
 }
-
-
-// --------------------------------------- En caso la Carga sea Teorico Y practica y las secciones sean mayor a 1
-        // for(i=0;i<numCargaP;i++){
-
-        //     seccion.length=0;
-        //     seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-        //     if(seccion.length>1)
-        //     {
-        //         $("#"+JsonCargaT[i]["secCurso"])
-        //     }
-
-        // }
-
-
 
 function calcularHoras(hora){
 
@@ -539,492 +456,25 @@ function seccionSinSlash(seccion){
     }
 }
 
+function fecha()
+{
+    var a=new Date();
+    var dia=a.getDate();
+    var mes=(a.getMonth()+1);
+    var año=a.getFullYear();
 
-// if((t+1)<numCargaP)
-                                                // {
-                                                //     cursoS=JsonCargaP[t+1]["codCurso"];
-                                                //     seccionS=JsonCargaP[t+1]["secCurso"]
-                                                // }
-                                                // else{
-                                                //     cursoS="";
-                                                //     seccionS="";
-                                                // }
-                                                // if(JsonCargaP[t]["secCurso"]==seccionS && cursoActual==cursoS)
-                                                // {
-                                                //     subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
-                                                // }
-                                                // else
-                                                // {
-                                                //     subhorasP=calcularHoras(JsonCargaP[t]["hora"])+subhorasP;
-                                                //     cadenaCargaPractica="<td>"+JsonCargaP[t]["secCurso"]+"</td><td>"+
-                                                //                               JsonCargaP[t]["nombres"]+"</td><td>"+
-                                                //                               subhorasP+"</td>";
-                                                // }
+    var digitos_dia=dia.toString().length;
+    var digitos_mes=mes.toString().length;
+    if(digitos_dia<2)
+    {
+        dia="0"+dia;
+    }
 
+    if(digitos_mes<2)
+    {
+        mes="0"+mes;
+    }
 
-
-// else if(curDisponibleT==1 && curDisponibleP==0){
-
-//                     for(i=0;i<numCargaT;i++)
-//                     {   
-//                         seccion.length=0;
-//                         if(cursoActual==JsonCargaT[i]["codCurso"])
-//                         {   
-//                             seccion=dividirSeccion(JsonCargaT[i]["secCurso"]);
-//                             canseccion=seccion.length;
-//                             a=0;
-//                             while(a<canseccion)
-//                             {
-//                                 for(c=0;c<numCargaT;c++)
-//                                 {
-//                                     if(cursoActual==JsonCargaT[c]["codCurso"] && JsonCargaT[c]["secCurso"].indexOf(seccion[a])!=-1)
-//                                     {
-                                        
-//                                     }
-//                                 }
-//                                 a++;
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-
-            // ******************************************************************************
-
-// function CrearTablaReportesCargaCurso(JsonCurricular, JsonCarga) {
-//     numCurso = Object.keys(JsonCurricular).length;
-//     numCarga = Object.keys(JsonCarga).length;
-//     codigoActual = "";
-//     nextcodigo = "";
-//     $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
-
-//     for (i = 0; i < numCarga; i++) {
-//         disponible = 0;
-//         // Codigo Actual del Bucle
-//         codigo = JsonCarga[i]["codCurso"];
-
-//         // Verificamos si el curso existe en la Curricula
-//         for (u = 0; u < numCurso; u++) {
-//             if (JsonCurricular[u]["codCurso"] == JsonCarga[i]["codCurso"]) {
-//                 disponible = 1;
-//             }
-//         }
-//         // Si el curso existe en la curricula Ingresara a la condicion
-//         if (disponible == 1) {
-        	
-//         			if (codigo == nextcodigo) {
-// 	                    $("#tabla").append("<tr><td>" + JsonCarga[i]["secCurso"] + "</td>" +
-// 	                        "<td>" + JsonCarga[i]["nombres"] + "</td>" +
-// 	                        "<td>" + JsonCarga[i]["teopra"] + "</td>" +
-// 	                        "<td>" + JsonCarga[i]["hora"] + "</td>" +
-// 	                        "</tr>");
-// 	                unirfilas++;
-// 	                $("." + codigoActual).attr("rowspan", unirfilas);
-        			
-//         	}
-// 	        	// Si el codigo del bucle es igual al codigo siguiente(ademas siempre entrara primero al else ya que nextcodigo aun no recibe un valor)
-
-//             } else {
-//                 // Verificamos que al final de la comparacion el Json siguiente no exista
-//                 if (i + 1 < numCarga) {
-//                     nextcodigo = JsonCarga[i + 1]["codCurso"];
-//                 }
-//                 codigoActual = codigo;
-
-               
-// 		    	$('#tabla').append("<tr><td class='" + codigo + " tdnomcodigo'>" + JsonCarga[i]["nomCurso"] +
-//                 "<td class='" + codigo + " tdcodigo'>" + JsonCarga[i]["codCurso"] + "</td>" +
-//                 "<td>" + JsonCarga[i]["secCurso"] + "</td>" +
-//                 "<td>" + JsonCarga[i]["nombres"] + "</td>" +
-//                 "<td>" + JsonCarga[i]["teopra"] + "</td>" +
-//                 "<td>" + JsonCarga[i]["hora"] + "</td>" +
-//                 "</tr>");
-
-//                 codigo = nextcodigo;
-//                 unirfilas = 1;
-				       
-
-//                 }
-                
-//             }
-//         }
-
-
-// --------------------------------------FINAL 2
-
-// var posicionT = new Array();
-// var a=0;
-// var cursoActual="";
-// var primerTeorico=0;
-// distinto=1;
-
-// function CrearTablaReportesCargaCurso1(JsonCurricular,JsonCarga){
-//     numCurso=Object.keys(JsonCurricular).length;
-//     numCarga=Object.keys(JsonCarga).length;
-//     nextcodigo="";
-//     $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
-//     //---------------- Primer Bucle Llena el Curso y Nombre del Curso en la tabla
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         // ----------Bucle Donde recorremos los cursos por curricula
-//         for(u=0;u<numCurso;u++)
-//             {
-//                 // Verificamos si el curso esta en la curricula
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {   
-//                     disponible=1;
-//                 }
-//             }
-        
-        
-//             // Verificamos si encontro el curso en la curricula
-//             if(disponible==1)
-//             {
-//                 // Verificamos que el Curso no se repita
-//                 if(JsonCarga[i]["codCurso"]!=nextcodigo)
-//                 {
-//                     $('#tabla').append("<tr id='"+JsonCarga[i]["codCurso"]+0+"'><td class='"+JsonCarga[i]["codCurso"]+" tdnomcodigo'>"+JsonCarga[i]["nomCurso"]+"</td>"+
-//                                            "<td class='"+JsonCarga[i]["codCurso"]+" tdcodigo'>"+JsonCarga[i]["codCurso"]+"</td>"+
-//                                            "</tr>");
-//                     posicionT[a]=i;
-//                     a++;
-//                     // verificamos que el siguiente codigo no salga del limite del Json
-//                     if(i+1<numCarga)
-//                     {
-//                         nextcodigo=JsonCarga[i+1]["codCurso"];
-//                     }
-//                 }
-//             }
-//     }
-//     //--------------- Segundo Bucle Llena la seccion y el  docente 
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         for(u=0;u<numCurso;u++)
-//             {
-//                 // Verificamos si el curso esta en la curricula
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {   
-
-//                     disponible=1;
-//                 }
-//             }
-//             // Verificamos si encontro el curso en la curricula
-//             if(disponible==1)
-//             {   
-//                     if ( $("#"+JsonCarga[i]["codCurso"]+"0").length > 0 ) {
-//                         if(distinto==1)
-//                         {   
-//                             if(JsonCarga[i]["teopra"]==="T")
-//                             { 
-//                             primerTeorico=0;
-//                             $("#"+JsonCarga[i]["codCurso"]+primerTeorico).append("<td id='sec"+JsonCarga[i]["codCurso"]+primerTeorico+"'>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["hora"]+"</td>");
-//                             distinto=0;
-//                             }
-//                         }else{
-//                             // Verificar si no sobrepasa el JSON
-//                             if(i+1<numCarga)
-//                             {
-//                                 if(JsonCarga[i]["codCurso"]!=JsonCarga[i+1]["codCurso"])
-//                                 {
-//                                     distinto=1;
-//                                 }
-//                             }
-                            
-
-//                             if(JsonCarga[i]["teopra"]==="T")
-//                             {   
-//                                 // if()
-//                                 seccion=$("#sec"+JsonCarga[i]["codCurso"]+primerTeorico).html();
-//                                 if((seccion.length)>1)
-//                                 {
-//                                     console.log(seccion);
-//                                 }
-                                
-
-//                                 $("#"+JsonCarga[i]["codCurso"]+primerTeorico).after("<tr id='"+JsonCarga[i]["codCurso"]+(primerTeorico+1)+"'>"+
-//                                                                                  "<td id='sec"+JsonCarga[i]["codCurso"]+(primerTeorico+1)+"'>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["hora"]+"</td></tr>");
-//                                 primerTeorico++;
-//                                 $("."+JsonCarga[i]["codCurso"]).attr("rowspan",(primerTeorico+1));
-//                             }
-//                         }
-//                     }
-//                     else
-//                     {
-
-//                     }
-                
-//             }
-//     }
-
-// }
-// ------------------------------------------------------ULTIMO
-// var posicionT = new Array();
-// var a=0;
-// var cursoActual="";
-// var primerTeorico=0;
-// distinto=1;
-
-// function CrearTablaReportesCargaCurso1(JsonCurricular,JsonCarga){
-//     numCurso=Object.keys(JsonCurricular).length;
-//     numCarga=Object.keys(JsonCarga).length;
-//     nextcodigo="";
-//     $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
-//     //---------------- Primer Bucle Llena el Curso y Nombre del Curso en la tabla
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         // ----------Bucle Donde recorremos los cursos por curricula
-//         for(u=0;u<numCurso;u++)
-//             {
-//                 // Verificamos si el curso esta en la curricula
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {   
-//                     disponible=1;
-//                 }
-//             }
-        
-        
-//             // Verificamos si encontro el curso en la curricula
-//             if(disponible==1)
-//             {
-//                 // Verificamos que el Curso no se repita
-//                 if(JsonCarga[i]["codCurso"]!=nextcodigo)
-//                 {
-//                     $('#tabla').append("<tr id='"+JsonCarga[i]["codCurso"]+0+"'><td class='"+JsonCarga[i]["codCurso"]+" tdnomcodigo'>"+JsonCarga[i]["nomCurso"]+"</td>"+
-//                                            "<td class='"+JsonCarga[i]["codCurso"]+" tdcodigo'>"+JsonCarga[i]["codCurso"]+"</td>"+
-//                                            "</tr>");
-//                     posicionT[a]=i;
-//                     a++;
-//                     // verificamos que el siguiente codigo no salga del limite del Json
-//                     if(i+1<numCarga)
-//                     {
-//                         nextcodigo=JsonCarga[i+1]["codCurso"];
-//                     }
-//                 }
-//             }
-//     }
-//     //--------------- Segundo Bucle Llena la seccion y el  docente 
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         for(u=0;u<numCurso;u++)
-//             {
-//                 // Verificamos si el curso esta en la curricula
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {   
-
-//                     disponible=1;
-//                 }
-//             }
-//             // Verificamos si encontro el curso en la curricula
-//             if(disponible==1)
-//             {   
-//                     if ( $("#"+JsonCarga[i]["codCurso"]+"0").length > 0 ) {
-//                         if(distinto==1)
-//                         {   
-//                             if(JsonCarga[i]["teopra"]==="T")
-//                             { 
-//                             primerTeorico=0;
-//                             $("#"+JsonCarga[i]["codCurso"]+primerTeorico).append("<td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["hora"]+"</td>");
-//                             distinto=0;
-//                             }
-//                         }else{
-//                             // Verificar si no sobrepasa el JSON
-//                             if(i+1<numCarga)
-//                             {
-//                                 if(JsonCarga[i]["codCurso"]!=JsonCarga[i+1]["codCurso"])
-//                                 {
-//                                     distinto=1;
-//                                 }
-//                             }
-                            
-
-//                             if(JsonCarga[i]["teopra"]==="T")
-//                             {   
-//                                 $("#"+JsonCarga[i]["codCurso"]+primerTeorico).after("<tr id='"+JsonCarga[i]["codCurso"]+(primerTeorico+1)+"'><td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                                                                  "<td>"+JsonCarga[i]["hora"]+"</td></tr>");
-//                                 primerTeorico++;
-//                                 $("."+JsonCarga[i]["codCurso"]).attr("rowspan",(primerTeorico+1));
-//                             }
-//                         }
-//                     }
-//                     else
-//                     {
-
-//                     }
-                
-//             }
-//     }
-
-// }
-// var valor=$("#MB1550>td:first+td+td").html();console.log(valor);
-
-// function CrearTablaReportesCargaCurso(JsonCurricular,JsonCarga){
-//     numCurso=Object.keys(JsonCurricular).length;
-//     numCarga=Object.keys(JsonCarga).length;
-//     anexo="";
-//     nextcodigo="";
-//     $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
-
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         codigo=JsonCarga[i]["codCurso"];
-
-//             for(u=0;u<numCurso;u++)
-//             {
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {   
-
-//                     disponible=1;
-//                 }
-//             }
-
-//         if(disponible==1)
-//         {
-//             // Si el codigo del bucle es igual al codigo siguiente(ademas siempre entrara primero al else ya que nextcodigo aun no recibe un valor)
-//             if(codigo==nextcodigo)
-//             {
-//                 switch(JsonCarga[i]["teopra"])
-//                 {
-//                     case "T":
-//                             $("#tabla").append("<tr><td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["hora"]+"</td>"+
-//                                    "</tr>");
-//                             unirfilas++;
-//                             if(anexo!="")
-//                             {
-//                                 $("."+anexo).attr("rowspan",unirfilas);
-//                             }
-//                         break;
-//                     case "P":
-
-//                         break;
-//                     default:
-//                 }
-                
-//             }
-//             else
-//             {
-//                 switch(JsonCarga[i]["teopra"])
-//                 {
-//                     case "T":
-//                         // Verificamos que al final de la comparacion el Json siguiente no exista
-//                         if(i+1<numCarga)
-//                         {
-//                             nextcodigo=JsonCarga[i+1]["codCurso"];
-//                         }
-
-                        
-
-//                         anexo=codigo;
-
-//                         $('#tabla').append("<tr><td class='"+codigo+" tdnomcodigo'>"+JsonCarga[i]["nomCurso"]+
-//                                            "<td class='"+codigo+" tdcodigo'>"+JsonCarga[i]["codCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["hora"]+"</td>"+
-//                                             "</tr>");
-
-//                         // codigo=nextcodigo;
-//                         unirfilas=1;
-//                         break;
-//                     case "P":
-//                         if(i+1<numCarga)
-//                         {
-//                             nextcodigo=JsonCarga[i+1]["codCurso"];
-//                         }
-//                         anexo=codigo;
-//                         $('#tabla').append("<tr><td class='"+codigo+" tdnomcodigo'>"+JsonCarga[i]["nomCurso"]+
-//                                            "<td class='"+codigo+" tdcodigo'>"+JsonCarga[i]["codCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                            "<td>"+"Vacio"+"</td>"+
-//                                            "<td>"+JsonCarga[i]["hora"]+"</td>"+
-//                                             "</tr>");
-//                         // codigo=nextcodigo;
-//                         unirfilas=1;
-//                         break;
-//                     default:
-//                 }
-
-                
-//             }
-//         }   
-//     }
-// }
-
-    
-//  function CrearTablaReportesCargaCurso(JsonCurricular,JsonCarga){
-//     numCurso=Object.keys(JsonCurricular).length;
-//     numCarga=Object.keys(JsonCarga).length;
-//     anexo="";
-//     nextcodigo="";
-//     $('#contenedor-carga-curso').append("<table border='1' id='tabla' class='tabla-reporte-carga-curso border'>");
-
-//     for(i=0;i<numCarga;i++){
-//         disponible=0;
-//         codigo=JsonCarga[i]["codCurso"];
-
-//             for(u=0;u<numCurso;u++)
-//             {
-//                 if(JsonCurricular[u]["codCurso"]==JsonCarga[i]["codCurso"])
-//                 {
-//                     disponible=1;
-//                 }
-//             }
-
-//         if(disponible==1)
-//         {
-//             // Si el codigo del bucle es igual al codigo siguiente(ademas siempre entrara primero al else ya que nextcodigo aun no recibe un valor)
-//             if(codigo==nextcodigo)
-//             {
-//                             $("#tabla").append("<tr><td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                    "<td>"+JsonCarga[i]["hora"]+"</td>"+
-//                                    "</tr>");
-//                             unirfilas++;
-//                             if(anexo!="")
-//                             {
-//                                 $("."+anexo).attr("rowspan",unirfilas);
-//                             }
-                
-//             }
-//             else
-//             {
-//                         // Verificamos que al final de la comparacion el Json siguiente no exista
-//                         if(i+1<numCarga)
-//                         {
-//                             nextcodigo=JsonCarga[i+1]["codCurso"];
-//                         }
-
-                        
-
-//                         anexo=codigo;
-
-//                         $('#tabla').append("<tr><td class='"+codigo+" tdnomcodigo'>"+JsonCarga[i]["nomCurso"]+
-//                                            "<td class='"+codigo+" tdcodigo'>"+JsonCarga[i]["codCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["secCurso"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["nombres"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["teopra"]+"</td>"+
-//                                            "<td>"+JsonCarga[i]["hora"]+"</td>"+
-//                                             "</tr>");
-
-//                         codigo=nextcodigo;
-//                         unirfilas=1;
-//             }
-//         }   
-//     }
-// }
+    var fechafinal=dia+"/"+mes+"/"+año;
+    return fechafinal;
+}

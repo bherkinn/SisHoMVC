@@ -10,6 +10,7 @@
                      <li><a href="index.php"><i class="icono izquierda fas fa-registered"></i>Principal</a></li>
                      <li><a href="index.php?view=Restaurar"><i class="icono izquierda fas fa-redo-alt"></i>Restaurar</a></li>
                      <li><a href="index.php?view=CargaCurso"><i class="icono izquierda fas fa-book"></i>Carga Curso</a></li>
+                     <li><a href="index.php?view=CargaDocente"><i class="icono izquierda fas fa-users"></i>Carga Docente</a></li>
                      <li class="titulo-sub-menu">VISTAS</li>
                      <li>
                         <a href="#" id="link1"><i class="izquierda fas fa-eye"></i>Automatico<i class="icono derecha fas fa-chevron-down"></i></a>

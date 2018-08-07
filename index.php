@@ -9,6 +9,10 @@
 				require_once("controllers/restaurar_controller.php");
 				break;
 
+			case 'CargaDocente':
+				require_once("controllers/carga_docente_controller.php");
+				break;
+
 			case 'CargaCurso':
 				require_once("controllers/carga_curso_controller.php");
 				break;
